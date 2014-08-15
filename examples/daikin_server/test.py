@@ -2,26 +2,21 @@
 
 """ This test script should restart you aircon. """
 
-import serial
+import json
 import time
+import requests
 
-from daikin_protocol import encode, bin2hex
-
-SERIAL_PORT = "/dev/ttyACM0"
-HEADER = "885be400800000000000000000000000000000c8"
+HOST = 'http://localhost:8000/'
 STATE = {"temperature": 26, "power": False, "off_timer": False,
          "fan_speed": "AUTO", "vertical_swing": False, "mode": "COOL",
          "on_timer": False, "horizontal_swing": False}
 
-print "Connecting to the Arduino"
-ser = serial.Serial(SERIAL_PORT, 9600)
-
 print "Stopping the aircon"
-ser.write('SEND {} {}\n'.format(HEADER, bin2hex(encode(STATE))))
+requests.post(HOST, data=json.dumps(STATE))
 
 print "Waiting 10sec"
 time.sleep(10)
 
 print "Starting the aircon"
 STATE['power'] = True
-ser.write('SEND {} {}\n'.format(HEADER, bin2hex(encode(STATE))))
+requests.post(HOST, data=json.dumps(STATE))
