@@ -1,0 +1,9 @@
+Getting started:
+
+Please compile and upload the sketch to an arduino then connect it to your server.
+
+To start the webserver simply do : python daikin_server.py
+
+You can then run :
+
+python restart.py, it should restart your aircon.
